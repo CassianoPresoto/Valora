@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_friends">Friends</string>
+    <string name="tab_groups">Groups</string>
+    <string name="tab_add"></string>
+    <string name="tab_activities">Activities</string>
+    <string name="tab_account">Account</string>
+</resources>
