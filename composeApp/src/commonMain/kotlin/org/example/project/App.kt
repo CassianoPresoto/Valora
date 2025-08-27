@@ -8,7 +8,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Icon
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.stringResource
 import org.example.project.core.navigation.BottomTab
 import org.example.project.features.friends.presentation.FriendsScreen
 import org.example.project.features.groups.presentation.GroupsScreen
@@ -29,8 +31,12 @@ fun App() {
                         NavigationBarItem(
                             selected = selectedTab == tab,
                             onClick = { selectedTab = tab },
-                            icon = { Text(tab.iconEmoji) },
-                            label = { Text(tab.label) }
+                            icon = { Icon(tab.icon, contentDescription = null) },
+                            label = { 
+                                tab.labelRes?.let { labelRes ->
+                                    Text(stringResource(labelRes))
+                                }
+                            }
                         )
                     }
                 }
