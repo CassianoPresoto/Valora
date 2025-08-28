@@ -5,4 +5,18 @@
     <string name="tab_add"></string>
     <string name="tab_activities">Activities</string>
     <string name="tab_account">Account</string>
+    
+    <!-- Friends Screen Strings -->
+    <string name="search_friends_placeholder">Search friends...</string>
+    <string name="search_content_description">Search</string>
+    <string name="add_friend_content_description">Add friend</string>
+    <string name="filter_content_description">Filter</string>
+    <string name="profile_photo_content_description">Profile photo</string>
+    
+    <!-- Debt Status Strings -->
+    <string name="you_owe">You owe: $%s</string>
+    <string name="they_owe_you">They owe you: $%s</string>
+    <string name="no_pending_debts">No pending debts</string>
+    <string name="owes_you">Owes you: $%s</string>
+    <string name="you_owe_them">You owe: $%s</string>
 </resources>
