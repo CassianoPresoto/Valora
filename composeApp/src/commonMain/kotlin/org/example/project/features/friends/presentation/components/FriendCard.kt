@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.features.friends.presentation.Friend
+import org.example.project.features.friends.domain.model.Friend
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import valora.composeapp.generated.resources.Res
@@ -40,7 +40,6 @@ fun FriendCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Profile picture circle
             Box(
                 modifier = Modifier
                     .size(48.dp)
@@ -48,7 +47,7 @@ fun FriendCard(
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
-                if (friend.profileImageUrl != null) {
+                if (friend.avatarUrl != null) {
                     // TODO: Load actual image when image loading is implemented
                     Icon(
                         imageVector = Icons.Default.Person,
@@ -66,7 +65,6 @@ fun FriendCard(
             
             Spacer(modifier = Modifier.width(12.dp))
             
-            // Friend name
             Text(
                 text = friend.name,
                 fontSize = 16.sp,
@@ -74,16 +72,15 @@ fun FriendCard(
                 modifier = Modifier.weight(1f)
             )
             
-            // Balance information
-            if (friend.balance != 0.0) {
+            if (friend.totalBalance != 0.0) {
                 Text(
-                    text = if (friend.balance > 0) {
-                        stringResource(Res.string.owes_you, friend.balance.toString())
+                    text = if (friend.totalBalance > 0) {
+                        stringResource(Res.string.owes_you, friend.totalBalance.toString())
                     } else {
-                        stringResource(Res.string.you_owe_them, kotlin.math.abs(friend.balance).toString())
+                        stringResource(Res.string.you_owe_them, kotlin.math.abs(friend.totalBalance).toString())
                     },
                     fontSize = 14.sp,
-                    color = if (friend.balance > 0) {
+                    color = if (friend.totalBalance > 0) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.error
@@ -103,32 +100,29 @@ private fun FriendCardPreview() {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Friend who owes you
             FriendCard(
                 friend = Friend(
-                    id = "1",
+                    userId = "1",
                     name = "João Silva",
-                    balance = 25.50
+                    totalBalance = 25.50
                 ),
                 onClick = { }
             )
             
-            // Friend you owe
             FriendCard(
                 friend = Friend(
-                    id = "2",
+                    userId = "2",
                     name = "Maria Santos",
-                    balance = -75.00
+                    totalBalance = -75.00
                 ),
                 onClick = { }
             )
             
-            // Friend with no balance
             FriendCard(
                 friend = Friend(
-                    id = "3",
+                    userId = "3",
                     name = "Carlos Lima",
-                    balance = 0.0
+                    totalBalance = 0.0
                 ),
                 onClick = { }
             )
