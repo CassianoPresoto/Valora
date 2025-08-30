@@ -1,6 +1,11 @@
 package org.example.project
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,11 +15,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.project.core.navigation.BottomTab
-import org.example.project.features.account.presentation.AccountScreen
-import org.example.project.features.activities.presentation.ActivitiesScreen
-import org.example.project.features.add.presentation.AddScreen
-import org.example.project.features.friends.presentation.FriendsScreen
-import org.example.project.features.groups.presentation.GroupsScreen
+import org.example.project.ui.AppContent
+import org.example.project.ui.components.RailMenuItem
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -26,26 +28,47 @@ fun App() {
         BoxWithConstraints {
             val useNavigationRail = maxWidth >= 600.dp
             if (useNavigationRail) {
+                var isRailCollapsed by rememberSaveable { mutableStateOf(false) }
                 Row(modifier = Modifier.fillMaxSize()) {
                     NavigationRail(
-                        modifier = Modifier.fillMaxHeight()
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(
+                                animateDpAsState(
+                                    targetValue = if (isRailCollapsed) 72.dp else 220.dp,
+                                    animationSpec = tween(durationMillis = 200)
+                                ).value
+                            )
                     ) {
                         Column(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.SpaceEvenly
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             BottomTab.entries.forEach { tab ->
-                                NavigationRailItem(
+                                RailMenuItem(
                                     selected = selectedTab == tab,
+                                    label = tab.labelRes?.let { stringResource(it) } ?: "",
                                     onClick = { selectedTab = tab },
                                     icon = { Icon(tab.icon, contentDescription = null) },
-                                    label = {
-                                        tab.labelRes?.let { labelRes ->
-                                            Text(stringResource(labelRes))
-                                        }
-                                    }
+                                    showLabel = !isRailCollapsed,
                                 )
                             }
+                            Spacer(modifier = Modifier.weight(1f))
+                            RailMenuItem(
+                                selected = false,
+                                label = "",
+                                onClick = { isRailCollapsed = !isRailCollapsed },
+                                icon = {
+                                    Icon(
+                                        imageVector = if (isRailCollapsed) Icons.Filled.ChevronRight else Icons.Filled.ChevronLeft,
+                                        contentDescription = null
+                                    )
+                                },
+                                showLabel = false,
+                            )
                         }
                     }
                     AppContent(selectedTab, PaddingValues(0.dp))
@@ -73,16 +96,5 @@ fun App() {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun AppContent(tab: BottomTab, innerPadding: PaddingValues) {
-    when (tab) {
-        BottomTab.Friends -> FriendsScreen.Content(innerPadding)
-        BottomTab.Groups -> GroupsScreen.Content(innerPadding)
-        BottomTab.Add -> AddScreen.Content(innerPadding)
-        BottomTab.Activities -> ActivitiesScreen.Content(innerPadding)
-        BottomTab.Account -> AccountScreen.Content(innerPadding)
     }
 }
