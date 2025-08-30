@@ -19,4 +19,8 @@
     <string name="no_pending_debts">No pending debts</string>
     <string name="owes_you">Owes you: $%s</string>
     <string name="you_owe_them">You owe: $%s</string>
+    
+    <!-- FriendCard small labels -->
+    <string name="small_they_owe_you_label">They owe you</string>
+    <string name="small_you_owe_label">You owe</string>
 </resources>
