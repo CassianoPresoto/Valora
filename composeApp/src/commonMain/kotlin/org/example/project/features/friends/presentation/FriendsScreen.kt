@@ -15,18 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.features.friends.presentation.components.FriendCard
+import org.example.project.features.friends.domain.model.Friend
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import valora.composeapp.generated.resources.Res
 import valora.composeapp.generated.resources.*
-
-// Data classes for friends
-data class Friend(
-    val id: String,
-    val name: String,
-    val profileImageUrl: String? = null,
-    val balance: Double // positive = they owe you, negative = you owe them
-)
 
 object FriendsScreen {
     @Composable
@@ -35,14 +28,14 @@ object FriendsScreen {
         var searchQuery by remember { mutableStateOf("") }
         var totalDebt by remember { mutableStateOf(-150.50) } // Example: you owe R$ 150.50
         
-        // Sample friends data
+        // Sample friends data (using domain model)
         val friends = remember {
             listOf(
-                Friend("1", "João Silva", balance = 25.50),
-                Friend("2", "Maria Santos", balance = -75.00),
-                Friend("3", "Pedro Costa", balance = 100.00),
-                Friend("4", "Ana Oliveira", balance = -30.25),
-                Friend("5", "Carlos Lima", balance = 0.0)
+                Friend(userId = "1", name = "João Silva", totalBalance = 25.50),
+                Friend(userId = "2", name = "Maria Santos", totalBalance = -75.00),
+                Friend(userId = "3", name = "Pedro Costa", totalBalance = 100.00),
+                Friend(userId = "4", name = "Ana Oliveira", totalBalance = -30.25),
+                Friend(userId = "5", name = "Carlos Lima", totalBalance = 0.0)
             )
         }
         
