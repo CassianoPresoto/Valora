@@ -12,12 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.features.friends.domain.model.Friend
+import org.example.project.ui.theme.ValoraTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import valora.composeapp.generated.resources.Res
 import valora.composeapp.generated.resources.*
 
 @Composable
@@ -62,31 +63,63 @@ fun FriendCard(
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.width(12.dp))
-            
             Text(
                 text = friend.name,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.weight(1f)
             )
-            
-            if (friend.totalBalance != 0.0) {
-                Text(
-                    text = if (friend.totalBalance > 0) {
-                        stringResource(Res.string.owes_you, friend.totalBalance.toString())
-                    } else {
-                        stringResource(Res.string.you_owe_them, kotlin.math.abs(friend.totalBalance).toString())
-                    },
-                    fontSize = 14.sp,
-                    color = if (friend.totalBalance > 0) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.error
-                    },
-                    fontWeight = FontWeight.Medium
-                )
+
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(1.dp)
+            ) {
+                val isPositive = friend.totalBalance > 0
+                val labelColor = if (isPositive) {
+                    ValoraTheme.colors.positiveSoft
+                } else {
+                    ValoraTheme.colors.negativeSoft
+                }
+
+                if (friend.totalBalance != 0.0) {
+                    Text(
+                        text = if (isPositive) {
+                            stringResource(Res.string.small_they_owe_you_label)
+                        } else {
+                            stringResource(Res.string.small_you_owe_label)
+                        },
+                        fontSize = 12.sp,
+                        lineHeight = 11.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Clip,
+                        color = labelColor,
+                        fontWeight = FontWeight.Normal
+                    )
+                    Text(
+                        text = "R$ " + kotlin.math.abs(friend.totalBalance).toString(),
+                        fontSize = 18.sp,
+                        lineHeight = 17.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Clip,
+                        color = labelColor,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                } else {
+                    Text(
+                        text = stringResource(Res.string.no_pending_debts),
+                        fontSize = 12.sp,
+                        lineHeight = 11.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Clip,
+                        color = ValoraTheme.colors.positive,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
             }
         }
     }
@@ -108,7 +141,8 @@ private fun FriendCardPreview() {
                 ),
                 onClick = { }
             )
-            
+
+
             FriendCard(
                 friend = Friend(
                     userId = "2",
@@ -117,7 +151,8 @@ private fun FriendCardPreview() {
                 ),
                 onClick = { }
             )
-            
+
+
             FriendCard(
                 friend = Friend(
                     userId = "3",

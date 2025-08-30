@@ -19,80 +19,83 @@ import org.example.project.ui.AppContent
 import org.example.project.ui.components.RailMenuItem
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.example.project.ui.theme.ValoraTheme
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var selectedTab by rememberSaveable { mutableStateOf(BottomTab.Friends) }
-        BoxWithConstraints {
-            val useNavigationRail = maxWidth >= 600.dp
-            if (useNavigationRail) {
-                var isRailCollapsed by rememberSaveable { mutableStateOf(false) }
-                Row(modifier = Modifier.fillMaxSize()) {
-                    NavigationRail(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .width(
-                                animateDpAsState(
-                                    targetValue = if (isRailCollapsed) 72.dp else 220.dp,
-                                    animationSpec = tween(durationMillis = 200)
-                                ).value
-                            )
-                    ) {
-                        Column(
+        ValoraTheme {
+            var selectedTab by rememberSaveable { mutableStateOf(BottomTab.Friends) }
+            BoxWithConstraints {
+                val useNavigationRail = maxWidth >= 600.dp
+                if (useNavigationRail) {
+                    var isRailCollapsed by rememberSaveable { mutableStateOf(false) }
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        NavigationRail(
                             modifier = Modifier
                                 .fillMaxHeight()
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                                .width(
+                                    animateDpAsState(
+                                        targetValue = if (isRailCollapsed) 72.dp else 220.dp,
+                                        animationSpec = tween(durationMillis = 200)
+                                    ).value
+                                )
                         ) {
-                            BottomTab.entries.forEach { tab ->
-                                RailMenuItem(
-                                    selected = selectedTab == tab,
-                                    label = tab.labelRes?.let { stringResource(it) } ?: "",
-                                    onClick = { selectedTab = tab },
-                                    icon = { Icon(tab.icon, contentDescription = null) },
-                                    showLabel = !isRailCollapsed,
-                                )
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            RailMenuItem(
-                                selected = false,
-                                label = "",
-                                onClick = { isRailCollapsed = !isRailCollapsed },
-                                icon = {
-                                    Icon(
-                                        imageVector = if (isRailCollapsed) Icons.Filled.ChevronRight else Icons.Filled.ChevronLeft,
-                                        contentDescription = null
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                BottomTab.entries.forEach { tab ->
+                                    RailMenuItem(
+                                        selected = selectedTab == tab,
+                                        label = tab.labelRes?.let { stringResource(it) } ?: "",
+                                        onClick = { selectedTab = tab },
+                                        icon = { Icon(tab.icon, contentDescription = null) },
+                                        showLabel = !isRailCollapsed,
                                     )
-                                },
-                                showLabel = false,
-                            )
-                        }
-                    }
-                    AppContent(selectedTab, PaddingValues(0.dp))
-                }
-            } else {
-                Scaffold(
-                    bottomBar = {
-                        NavigationBar {
-                            BottomTab.entries.forEach { tab ->
-                                NavigationBarItem(
-                                    selected = selectedTab == tab,
-                                    onClick = { selectedTab = tab },
-                                    icon = { Icon(tab.icon, contentDescription = null) },
-                                    label = {
-                                        tab.labelRes?.let { labelRes ->
-                                            Text(stringResource(labelRes))
-                                        }
-                                    }
+                                }
+                                Spacer(modifier = Modifier.weight(1f))
+                                RailMenuItem(
+                                    selected = false,
+                                    label = "",
+                                    onClick = { isRailCollapsed = !isRailCollapsed },
+                                    icon = {
+                                        Icon(
+                                            imageVector = if (isRailCollapsed) Icons.Filled.ChevronRight else Icons.Filled.ChevronLeft,
+                                            contentDescription = null
+                                        )
+                                    },
+                                    showLabel = false,
                                 )
                             }
                         }
+                        AppContent(selectedTab, PaddingValues(0.dp))
                     }
-                ) { innerPadding ->
-                    AppContent(selectedTab, innerPadding)
+                } else {
+                    Scaffold(
+                        bottomBar = {
+                            NavigationBar {
+                                BottomTab.entries.forEach { tab ->
+                                    NavigationBarItem(
+                                        selected = selectedTab == tab,
+                                        onClick = { selectedTab = tab },
+                                        icon = { Icon(tab.icon, contentDescription = null) },
+                                        label = {
+                                            tab.labelRes?.let { labelRes ->
+                                                Text(stringResource(labelRes))
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    ) { innerPadding ->
+                        AppContent(selectedTab, innerPadding)
+                    }
                 }
             }
         }
