@@ -19,4 +19,8 @@
     <string name="no_pending_debts">Sem pendências</string>
     <string name="owes_you">Deve a você: R$ %s</string>
     <string name="you_owe_them">Você deve: R$ %s</string>
+    
+    <!-- FriendCard small labels -->
+    <string name="small_they_owe_you_label">Devem a você</string>
+    <string name="small_you_owe_label">Você deve</string>
 </resources>
