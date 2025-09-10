@@ -45,4 +45,21 @@
     <string name="expense_name_required">Nome da despesa é obrigatório</string>
     <string name="expense_amount_required">Valor da despesa é obrigatório</string>
     <string name="invalid_amount">Valor inválido</string>
+
+    <!-- Add Friend Screen Strings -->
+    <string name="add_friend_title">Adicionar Amigo</string>
+    <string name="search_users_placeholder">Buscar por nome, email ou usuário</string>
+    <string name="search_contacts_placeholder">Buscar nos contatos</string>
+    <string name="contacts_tab">Contatos</string>
+    <string name="users_tab">Usuários</string>
+    <string name="no_contacts_found">Nenhum contato encontrado</string>
+    <string name="no_users_found">Nenhum usuário encontrado</string>
+    <string name="loading_contacts">Carregando contatos...</string>
+    <string name="loading_users">Buscando usuários...</string>
+    <string name="add_friend_button">Adicionar</string>
+    <string name="friend_request_sent">Solicitação enviada</string>
+    <string name="already_friends">Já são amigos</string>
+    <string name="invite_to_app">Convidar para o app</string>
+    <string name="contact_permissions_required">Permissão de contatos necessária</string>
+    <string name="grant_permission">Conceder permissão</string>
 </resources>
