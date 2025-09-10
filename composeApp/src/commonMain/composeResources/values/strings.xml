@@ -23,4 +23,26 @@
     <!-- FriendCard small labels -->
     <string name="small_they_owe_you_label">Devem a você</string>
     <string name="small_you_owe_label">Você deve</string>
+
+    <!-- Add Screen Strings -->
+    <string name="add_expense_title">Adicionar Despesa</string>
+    <string name="select_friend_or_group">Selecione um amigo ou grupo</string>
+    <string name="friends_tab">Amigos</string>
+    <string name="groups_tab">Grupos</string>
+    <string name="no_friends_available">Nenhum amigo disponível</string>
+    <string name="no_groups_available">Nenhum grupo disponível</string>
+
+    <!-- Add Expense Form Strings -->
+    <string name="expense_name_label">Nome da despesa *</string>
+    <string name="expense_name_placeholder">Digite o nome da despesa</string>
+    <string name="expense_description_label">Descrição (opcional)</string>
+    <string name="expense_description_placeholder">Digite uma descrição</string>
+    <string name="expense_amount_label">Valor da despesa *</string>
+    <string name="expense_amount_placeholder">0,00</string>
+    <string name="currency_symbol">R$</string>
+    <string name="add_expense_button">Adicionar Despesa</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="expense_name_required">Nome da despesa é obrigatório</string>
+    <string name="expense_amount_required">Valor da despesa é obrigatório</string>
+    <string name="invalid_amount">Valor inválido</string>
 </resources>
