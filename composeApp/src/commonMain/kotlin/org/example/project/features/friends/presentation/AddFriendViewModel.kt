@@ -15,8 +15,8 @@ import org.example.project.features.friends.domain.usecase.SearchUsersUseCase
 import org.example.project.features.friends.domain.usecase.AddFriendUseCase
 
 class AddFriendViewModel(
-    private val searchUsersUseCase: SearchUsersUseCase? = null, // Will be null until we implement repositories
-    private val addFriendUseCase: AddFriendUseCase? = null,
+    private val searchUsersUseCase: SearchUsersUseCase,
+    private val addFriendUseCase: AddFriendUseCase,
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 ) {
     private val _uiState = MutableStateFlow(AddFriendUiState())
@@ -140,13 +140,18 @@ class AddFriendViewModel(
     private fun addFriendById(userId: String) {
         coroutineScope.launch {
             try {
-                // TODO: Use real add friend when repositories are implemented
-                // addFriendUseCase?.invoke(userId)
-                
-                // For now, simulate success
-                println("Adding friend with ID: $userId")
-                _uiState.value = _uiState.value.copy(
-                    message = "Solicitação de amizade enviada!"
+                val result = addFriendUseCase.invoke(userId)
+                result.fold(
+                    onSuccess = {
+                        _uiState.value = _uiState.value.copy(
+                            message = "Solicitação de amizade enviada!"
+                        )
+                    },
+                    onFailure = { error ->
+                        _uiState.value = _uiState.value.copy(
+                            error = error.message ?: "Erro ao adicionar amigo"
+                        )
+                    }
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(

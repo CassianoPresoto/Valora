@@ -8,22 +8,35 @@ import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.example.project.core.di.appModules
 import org.example.project.core.navigation.BottomTab
 import org.example.project.ui.AppContent
 import org.example.project.ui.components.RailMenuItem
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.example.project.ui.theme.ValoraTheme
+import org.koin.core.context.startKoin
+import org.koin.mp.KoinPlatform
 
 @Composable
 @Preview
 fun App() {
+    // Initialize Koin synchronously before any composition
+    try {
+        KoinPlatform.getKoin()
+    } catch (e: Exception) {
+        startKoin {
+            modules(appModules)
+        }
+    }
+    
     MaterialTheme {
         ValoraTheme {
             var selectedTab by rememberSaveable { mutableStateOf(BottomTab.Friends) }

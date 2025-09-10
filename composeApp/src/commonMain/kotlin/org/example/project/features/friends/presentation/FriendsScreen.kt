@@ -22,25 +22,15 @@ import valora.composeapp.generated.resources.Res
 import valora.composeapp.generated.resources.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import org.example.project.features.friends.domain.usecase.GetFriendsUseCase
-import org.example.project.features.friends.domain.usecase.SearchFriendsUseCase
-import org.example.project.features.friends.domain.usecase.GetTotalDebtSummaryUseCase
 import org.example.project.features.friends.domain.repository.FriendsRepository
+import org.koin.compose.koinInject
 
 object FriendsScreen {
     @Composable
     @Preview
     fun Content(innerPadding: PaddingValues) {
-        // TODO: Inject ViewModel through dependency injection when implemented
-        val viewModel = remember { 
-            // For now, create with mock repository - will be replaced with real implementations
-            val mockRepository = MockFriendsRepository()
-            FriendsViewModel(
-                getFriendsUseCase = GetFriendsUseCase(mockRepository),
-                searchFriendsUseCase = SearchFriendsUseCase(mockRepository),
-                getTotalDebtSummaryUseCase = GetTotalDebtSummaryUseCase(mockRepository)
-            )
-        }
+        // Inject ViewModel using Koin
+        val viewModel: FriendsViewModel = koinInject()
         
         val uiState by viewModel.uiState.collectAsState()
         

@@ -20,6 +20,7 @@ import org.example.project.core.database.entities.ContactEntity
 import org.jetbrains.compose.resources.stringResource
 import valora.composeapp.generated.resources.Res
 import valora.composeapp.generated.resources.*
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +28,7 @@ fun AddFriendScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = remember { AddFriendViewModel() }
+    val viewModel: AddFriendViewModel = koinInject()
     val uiState by viewModel.uiState.collectAsState()
     
     Column(
