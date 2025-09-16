@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "252411135435",
+    "project_id": "valora-app-plataform",
+    "storage_bucket": "valora-app-plataform.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252411135435:android:5a830f8592db844c46224e",
+        "android_client_info": {
+          "package_name": "valora.app.plataform"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252411135435-nge1pa3spdkajogs400ig7vpoteu226c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQCGUCNs5Pv2ddl47HidIed7n0K5z8tq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252411135435-nge1pa3spdkajogs400ig7vpoteu226c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
