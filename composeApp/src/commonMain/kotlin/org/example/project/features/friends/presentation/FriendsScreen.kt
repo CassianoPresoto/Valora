@@ -90,12 +90,13 @@ object FriendsScreen {
             ) {
                 // Debt text
                 Text(
-                    text = if (uiState.totalDebt < 0) {
-                        stringResource(Res.string.you_owe, kotlin.math.abs(uiState.totalDebt).toString())
-                    } else if (uiState.totalDebt > 0) {
-                        stringResource(Res.string.they_owe_you, uiState.totalDebt.toString())
-                    } else {
-                        stringResource(Res.string.no_pending_debts)
+                    text = run {
+                        val amount = kotlin.math.abs(uiState.totalDebt).toString()
+                        when {
+                            uiState.totalDebt < 0 -> stringResource(Res.string.you_owe).replace("%s", amount)
+                            uiState.totalDebt > 0 -> stringResource(Res.string.they_owe_you).replace("%s", uiState.totalDebt.toString())
+                            else -> stringResource(Res.string.no_pending_debts)
+                        }
                     },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,

@@ -18,7 +18,6 @@ object ExpenseMappers {
         val otherId: String? = domain.metadata["otherUserId"]
         val splits: Map<String, Double> = when (splitMode) {
             "PAYER_ALL" -> {
-                // Payer takes full share
                 participants.associateWith { userId -> if (userId == payerId) total else 0.0 }
             }
             "OTHER_ALL" -> {
@@ -27,7 +26,6 @@ object ExpenseMappers {
                 participants.associateWith { userId -> if (userId == targetId) total else 0.0 }
             }
             else -> {
-                // Equal split among participants by default
                 if (participants.isEmpty()) emptyMap() else {
                     val perHead = total / participants.size
                     participants.associateWith { perHead }
@@ -35,13 +33,12 @@ object ExpenseMappers {
             }
         }
 
-        // Deterministic friendshipId for two users (sorted join)
         val friendshipId = if (participants.size == 2) participants.sorted().joinToString("_") else null
 
         val createdAt = if (domain.createdAtEpochMillis > 0L) domain.createdAtEpochMillis else TimeUtils.currentTimeMillis()
 
         return FirebaseExpense(
-            id = domain.serverId, // Use serverId when updating existing; null to create new
+            id = domain.serverId,
             name = domain.name,
             createdBy = payerId,
             participants = participants,

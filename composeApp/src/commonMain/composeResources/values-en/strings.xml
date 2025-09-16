@@ -23,4 +23,67 @@
     <!-- FriendCard small labels -->
     <string name="small_they_owe_you_label">They owe you</string>
     <string name="small_you_owe_label">You owe</string>
+
+    <!-- Add Screen Strings -->
+    <string name="add_expense_title">Add Expense</string>
+    <string name="select_friend_or_group">Select a friend or group</string>
+    <string name="friends_tab">Friends</string>
+    <string name="groups_tab">Groups</string>
+    <string name="no_friends_available">No friends available</string>
+    <string name="no_groups_available">No groups available</string>
+
+    <!-- Add Expense Form Strings -->
+    <string name="expense_name_label">Expense name *</string>
+    <string name="expense_name_placeholder">Enter expense name</string>
+    <string name="expense_description_label">Description (optional)</string>
+    <string name="expense_description_placeholder">Enter a description</string>
+    <string name="expense_amount_label">Expense amount *</string>
+    <string name="expense_amount_placeholder">0.00</string>
+    <string name="currency_symbol">R$</string>
+    <string name="add_expense_button">Add Expense</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="expense_name_required">Expense name is required</string>
+    <string name="expense_amount_required">Expense amount is required</string>
+    <string name="invalid_amount">Invalid amount</string>
+
+    <!-- Add Friend Screen Strings -->
+    <string name="add_friend_title">Add Friend</string>
+    <string name="search_users_placeholder">Search by name, email or username</string>
+    <string name="search_contacts_placeholder">Search contacts</string>
+    <string name="contacts_tab">Contacts</string>
+    <string name="users_tab">Users</string>
+    <string name="no_contacts_found">No contacts found</string>
+    <string name="no_users_found">No users found</string>
+    <string name="loading_contacts">Loading contacts...</string>
+    <string name="loading_users">Searching users...</string>
+    <string name="add_friend_button">Add</string>
+    <string name="friend_request_sent">Request sent</string>
+    <string name="already_friends">Already friends</string>
+    <string name="invite_to_app">Invite to app</string>
+    <string name="contact_permissions_required">Contacts permission required</string>
+    <string name="grant_permission">Grant permission</string>
+
+    <!-- Profile Setup Strings -->
+    <string name="complete_profile">Complete Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="back">Back</string>
+    <string name="complete_your_profile">Complete your profile</string>
+    <string name="edit_your_profile">Edit your profile</string>
+    <string name="full_name">Full name</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="phone_placeholder">+1 (555) 555-5555</string>
+    <string name="username">Username</string>
+    <string name="username_placeholder">myusername</string>
+    <string name="username_help">Optional - used for search</string>
+    <string name="checking_availability">Checking availability...</string>
+    <string name="username_available">Username available</string>
+    <string name="username_taken">Username is already taken</string>
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="privacy_settings_description">Control how other users can find you</string>
+    <string name="searchable_by_phone">Searchable by phone</string>
+    <string name="searchable_by_email">Searchable by email</string>
+    <string name="searchable_by_username">Searchable by username</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="skip_for_now">Skip for now</string>
 </resources>
