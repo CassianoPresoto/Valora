@@ -18,6 +18,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -36,11 +37,14 @@ import valora.composeapp.generated.resources.groups_tab
 import valora.composeapp.generated.resources.no_friends_available
 import valora.composeapp.generated.resources.no_groups_available
 import valora.composeapp.generated.resources.select_friend_or_group
+import org.koin.compose.koinInject
+import kotlinx.coroutines.launch
 
 object AddExpenseForm {
     @Composable
     fun Content(innerPadding: PaddingValues) {
-        val viewModel = remember { AddViewModel() }
+        val viewModel: AddViewModel = koinInject()
+        val scope = rememberCoroutineScope()
         val uiState = viewModel.uiState
 
         if (uiState.showExpenseForm) {
@@ -50,15 +54,23 @@ object AddExpenseForm {
                 expenseName = uiState.expenseName,
                 expenseDescription = uiState.expenseDescription,
                 expenseAmount = uiState.expenseAmount,
+                payerIsCurrentUser = uiState.payerIsCurrentUser,
+                splitMode = uiState.splitMode,
+                isLoading = uiState.isLoading,
+                submitMessage = uiState.submitMessage,
                 expenseNameError = uiState.expenseNameError,
                 expenseAmountError = uiState.expenseAmountError,
                 onExpenseNameChange = viewModel::updateExpenseName,
                 onExpenseDescriptionChange = viewModel::updateExpenseDescription,
                 onExpenseAmountChange = viewModel::updateExpenseAmount,
+                onPayerChange = viewModel::updatePayerIsCurrentUser,
+                onSplitModeChange = viewModel::updateSplitMode,
                 onSubmit = {
-                    if (viewModel.validateAndSubmitExpense()) {
-                        // Expense was successfully added
-                        // TODO: Show success message or navigate back
+                    if (viewModel.validateInputs()) {
+                        scope.launch {
+                            val result = viewModel.submitExpense()
+                            // TODO: handle success/error feedback to UI
+                        }
                     }
                 },
                 onBack = viewModel::goBackToSelection,

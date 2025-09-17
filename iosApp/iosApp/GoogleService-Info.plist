@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>CLIENT_ID</key>
+        <string>252411135435-ujiu3h0m71rqiju40ajbgobi2g09npk5.apps.googleusercontent.com</string>
+        <key>REVERSED_CLIENT_ID</key>
+        <string>com.googleusercontent.apps.252411135435-ujiu3h0m71rqiju40ajbgobi2g09npk5</string>
+        <key>API_KEY</key>
+        <string>AIzaSyAdMOg42WCFR8MEwHCE8DIMD69M54ysb3Y</string>
+        <key>GCM_SENDER_ID</key>
+        <string>252411135435</string>
+        <key>PLIST_VERSION</key>
+        <string>1</string>
+        <key>BUNDLE_ID</key>
+        <string>valora.app.plataform</string>
+        <key>PROJECT_ID</key>
+        <string>valora-app-plataform</string>
+        <key>STORAGE_BUCKET</key>
+        <string>valora-app-plataform.firebasestorage.app</string>
+        <key>IS_ADS_ENABLED</key>
+        <false></false>
+        <key>IS_ANALYTICS_ENABLED</key>
+        <false></false>
+        <key>IS_APPINVITE_ENABLED</key>
+        <true></true>
+        <key>IS_GCM_ENABLED</key>
+        <true></true>
+        <key>IS_SIGNIN_ENABLED</key>
+        <true></true>
+        <key>GOOGLE_APP_ID</key>
+        <string>1:252411135435:ios:b216f80fda33238a46224e</string>
+    </dict>
+</plist>

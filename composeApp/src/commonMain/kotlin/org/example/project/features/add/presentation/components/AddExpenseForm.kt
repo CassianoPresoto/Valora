@@ -26,11 +26,17 @@ fun AddExpenseForm(
     expenseName: String,
     expenseDescription: String,
     expenseAmount: String,
+    payerIsCurrentUser: Boolean,
+    splitMode: String,
+    isLoading: Boolean,
+    submitMessage: String?,
     expenseNameError: String? = null,
     expenseAmountError: String? = null,
     onExpenseNameChange: (String) -> Unit,
     onExpenseDescriptionChange: (String) -> Unit,
     onExpenseAmountChange: (String) -> Unit,
+    onPayerChange: (Boolean) -> Unit,
+    onSplitModeChange: (String) -> Unit,
     onSubmit: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
@@ -132,21 +138,85 @@ fun AddExpenseForm(
             supportingText = expenseAmountError?.let { { Text(it) } },
             singleLine = true
         )
-        
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Who paid selector
+        Text(
+            text = "Quem pagou?",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+                selected = payerIsCurrentUser,
+                onClick = { onPayerChange(true) },
+                label = { Text("Você") }
+            )
+            FilterChip(
+                selected = !payerIsCurrentUser,
+                onClick = { onPayerChange(false) },
+                label = { Text(selectedFriend?.name ?: "Amigo") }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Split mode selector
+        Text(
+            text = "Como dividir?",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+                selected = splitMode == "EQUAL",
+                onClick = { onSplitModeChange("EQUAL") },
+                label = { Text("Igual") }
+            )
+            FilterChip(
+                selected = splitMode == "PAYER_ALL",
+                onClick = { onSplitModeChange("PAYER_ALL") },
+                label = { Text("Quem pagou tudo") }
+            )
+            FilterChip(
+                selected = splitMode == "OTHER_ALL",
+                onClick = { onSplitModeChange("OTHER_ALL") },
+                label = { Text("Outro tudo") }
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1f))
-        
+
         // Submit button
         Button(
             onClick = onSubmit,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            enabled = expenseName.isNotBlank() && expenseAmount.isNotBlank()
+            enabled = !isLoading && expenseName.isNotBlank() && expenseAmount.isNotBlank()
         ) {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(22.dp),
+                    strokeWidth = 2.dp
+                )
+            } else {
+                Text(
+                    text = stringResource(Res.string.add_expense_button),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        submitMessage?.let {
             Text(
-                text = stringResource(Res.string.add_expense_button),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+                text = it,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 14.sp
             )
         }
     }

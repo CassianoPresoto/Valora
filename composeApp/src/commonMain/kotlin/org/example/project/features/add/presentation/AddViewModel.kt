@@ -6,10 +6,16 @@ import androidx.compose.runtime.setValue
 import org.example.project.features.friends.domain.model.Friend
 import org.example.project.features.groups.domain.model.Group
 import org.example.project.features.add.domain.model.Expense
-import org.example.project.features.add.domain.model.ExpenseType
+import org.example.project.features.add.domain.usecase.AddExpenseFromDomainUseCase
+import org.example.project.features.friends.domain.repository.UsersRepository
+import org.example.project.core.utils.TimeUtils
+import kotlin.random.Random
 import kotlin.time.Clock
 
-class AddViewModel {
+class AddViewModel(
+    private val addExpenseFromDomain: AddExpenseFromDomainUseCase,
+    private val usersRepository: UsersRepository
+) {
     var uiState by mutableStateOf(AddUiState())
         private set
     
@@ -96,15 +102,21 @@ class AddViewModel {
             expenseAmountError = null
         )
     }
+
+    fun updatePayerIsCurrentUser(isCurrent: Boolean) {
+        uiState = uiState.copy(payerIsCurrentUser = isCurrent)
+    }
+
+    fun updateSplitMode(mode: String) {
+        uiState = uiState.copy(splitMode = mode)
+    }
     
-    fun validateAndSubmitExpense(): Boolean {
+    fun validateInputs(): Boolean {
         var hasErrors = false
-        
         if (uiState.expenseName.isBlank()) {
             uiState = uiState.copy(expenseNameError = "Nome da despesa é obrigatório")
             hasErrors = true
         }
-        
         if (uiState.expenseAmount.isBlank()) {
             uiState = uiState.copy(expenseAmountError = "Valor da despesa é obrigatório")
             hasErrors = true
@@ -120,14 +132,65 @@ class AddViewModel {
                 hasErrors = true
             }
         }
-        
-        if (!hasErrors) {
-            // TODO: Submit expense to repository
-            resetExpenseForm()
-            return true
+        if (uiState.selectedFriend == null && uiState.selectedGroup == null) {
+            // For now, only user-to-user. Require a friend selected.
+            hasErrors = true
         }
-        
-        return false
+        return !hasErrors
+    }
+
+    suspend fun submitExpense(): Result<String> {
+        uiState = uiState.copy(isLoading = true, submitMessage = null, expenseNameError = null, expenseAmountError = null)
+        // Current user (fallback to a dev user id if auth is not ready)
+        val currentUser = usersRepository.getCurrentUser().getOrNull()
+        val currentUserId = currentUser?.userId ?: "dev-user"
+        val friend = uiState.selectedFriend
+            ?: return Result.failure(IllegalStateException("Selecione um amigo"))
+        val amount = try {
+            uiState.expenseAmount.replace(",", ".").toDouble()
+        } catch (e: NumberFormatException) {
+            return Result.failure(IllegalArgumentException("Valor inválido"))
+        }
+        val payerId = if (uiState.payerIsCurrentUser) currentUserId else friend.userId
+        val otherUserId = if (uiState.payerIsCurrentUser) friend.userId else currentUserId
+        val metadata = buildMap {
+            put("splitMode", uiState.splitMode)
+            if (uiState.splitMode == "OTHER_ALL") put("otherUserId", otherUserId)
+        }
+        val expense = Expense(
+            expenseId = "local-${TimeUtils.currentTimeMillis()}-${Random.nextInt(0, 9999)}",
+            serverId = null,
+            name = uiState.expenseName,
+            description = uiState.expenseDescription.takeIf { it.isNotBlank() },
+            amount = amount,
+            paidBy = payerId,
+            splitBetween = listOf(currentUserId, friend.userId),
+            groupId = null,
+            category = null,
+            receiptUrl = null,
+            metadata = metadata,
+            createdAtEpochMillis = TimeUtils.currentTimeMillis(),
+            updatedAtEpochMillis = null
+        )
+        val result = runCatching { addExpenseFromDomain(expense).getOrThrow() }
+            .fold(
+                onSuccess = { id -> Result.success(id) },
+                onFailure = { e -> Result.failure(e) }
+            )
+        uiState = if (result.isSuccess) {
+            uiState.copy(submitMessage = "Despesa adicionada com sucesso")
+        } else {
+            uiState.copy(submitMessage = result.exceptionOrNull()?.message ?: "Falha ao adicionar despesa")
+        }
+        if (result.isSuccess) {
+            resetExpenseForm()
+        }
+        uiState = uiState.copy(isLoading = false)
+        return result
+    }
+
+    fun clearSubmitMessage() {
+        uiState = uiState.copy(submitMessage = null)
     }
     
     fun resetExpenseForm() {
@@ -169,7 +232,10 @@ data class AddUiState(
     val expenseAmount: String = "",
     val expenseNameError: String? = null,
     val expenseAmountError: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val payerIsCurrentUser: Boolean = true,
+    val splitMode: String = "EQUAL",
+    val submitMessage: String? = null
 )
 
 enum class SelectionTab {
